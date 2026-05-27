@@ -21,8 +21,20 @@ app.get('/', (req, res) => {
 });
 
 app.get('/produtos', (req, res) => {
-
   res.json(produtos);
+});
+
+app.get('/produtos/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const produto = produtos.find((p) => p.id === id);
+
+  if (!produto) {
+    return res.status(404).json({
+      mensagem: 'Produto não encontrado'
+    });
+  }
+
+  res.json(produto);
 });
 
 app.post('/produtos', (req, res) => {
