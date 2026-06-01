@@ -1,24 +1,22 @@
-
 const express = require('express');
 
 const router = express.Router();
 
 const {
-  listarUsuarios,
-  criarUsuario
+    listarProdutos,
+    criarProduto
 } = require(
-  '../controllers/usuarioController'
+    '../controllers/produtoController'
 );
 
 router.get(
-  '/usuarios',
-  listarUsuarios
+    '/produtos',
+    listarProdutos
 );
 
 router.post(
-  '/usuarios',
-  criarUsuario
+    '/produtos',
+    criarProduto
 );
 
 module.exports = router;
-            

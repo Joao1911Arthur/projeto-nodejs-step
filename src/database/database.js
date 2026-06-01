@@ -1,21 +1,17 @@
-
 const mongoose = require('mongoose');
 
 const conectarBanco = async () => {
+    try {
+        await mongoose.connect(
+            process.env.MONGO_URL
+        );
 
-  try {
+        console.log('MongoDB conectado');
 
-    await mongoose.connect(
-      process.env.MONGO_URL
-    );
+    } catch (error) {
 
-    console.log('MongoDB conectado');
-
-  } catch (error) {
-
-    console.log(error);
-  }
+        console.log(error);
+    }
 };
 
 module.exports = conectarBanco;
-          
