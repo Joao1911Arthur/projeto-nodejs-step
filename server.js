@@ -1,4 +1,5 @@
-require('dotenv').config()
+
+require('dotenv').config();
 
 const app = require('./src/app');
 
@@ -14,3 +15,4 @@ app.listen(process.env.PORT, () => {
     'Servidor rodando'
   );
 });
+            
