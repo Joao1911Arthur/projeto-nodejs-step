@@ -5,6 +5,8 @@ const Usuario = require("../models/Usuario");
 const logger = require("../utils/logger");
 const { ErroValidacao, ErroAutenticacao } = require("../utils/erros");
 
+const notificador = require("../utils/notificador");
+
 const JWT_SECRET = process.env.JWT_SECRET || "segredo";
 
 const registrar = async (req, res) => {
@@ -37,6 +39,8 @@ const registrar = async (req, res) => {
     );
 
     logger.info(`Usuário registrado: ${email}`);
+
+    notificador.enviarEmail(email, "Bem-vindo!", "Obrigado por se registrar.");
 
     res.status(201).json({
       mensagem: "Usuário registrado",
