@@ -1,7 +1,7 @@
-const carrinhoRoutes = require("./routes/carrinhoRoutes");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const path = require("path");
 
 const usuarioRoutes = require("./routes/usuarioRoutes");
 const produtoRoutes = require("./routes/produtoRoutes");
@@ -11,6 +11,8 @@ const streamRoutes = require("./routes/streamRoutes");
 const cepRoutes = require("./routes/cepRoutes");
 const sessaoRoutes = require("./routes/sessaoRoutes");
 const climaRoutes = require("./routes/climaRoutes");
+const carrinhoRoutes = require("./routes/carrinhoRoutes");
+const produtoPgRoutes = require("./routes/produtoPgRoutes");
 
 const loggerMiddleware = require("./middlewares/loggerMiddleware");
 
@@ -35,6 +37,8 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(express.static(path.join(__dirname, "../public")));
+
 app.use(authRoutes);
 app.use(produtoRoutes);
 app.use(usuarioRoutes);
@@ -44,4 +48,6 @@ app.use(cepRoutes);
 app.use(sessaoRoutes);
 app.use(climaRoutes);
 app.use(carrinhoRoutes);
+app.use(produtoPgRoutes);
+
 module.exports = app;
