@@ -13,8 +13,8 @@ const sessaoRoutes = require("./routes/sessaoRoutes");
 const climaRoutes = require("./routes/climaRoutes");
 const carrinhoRoutes = require("./routes/carrinhoRoutes");
 const produtoPgRoutes = require("./routes/produtoPgRoutes");
-
 const loggerMiddleware = require("./middlewares/loggerMiddleware");
+const calculoRoutes = require("./routes/calculoRoutes");
 
 const app = express();
 
@@ -39,6 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "../public")));
 
+app.use(calculoRoutes);
 app.use(authRoutes);
 app.use(produtoRoutes);
 app.use(usuarioRoutes);
@@ -51,3 +52,5 @@ app.use(carrinhoRoutes);
 app.use(produtoPgRoutes);
 
 module.exports = app;
+
+            
