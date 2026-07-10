@@ -12,6 +12,13 @@ const usuariosSchema = mongoose.Schema({
     cargo: {
         type: String,
         required: true
+    },
+    idade:{
+        type: Number
+    },
+    senha:{
+        type: String,
+        required: true
     }
 });
 

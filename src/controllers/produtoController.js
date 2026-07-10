@@ -2,18 +2,18 @@ const Produto = require('../models/Produtos');
 
 const listarProdutos = async (req, res) => {
 
-  const produtos = await Usuario.find();
+  const produtos = await Produto.find();
 
   res.json(produtos);
 };
 
 const criarProduto = async (req, res) =>{
 
-    const produto = await Usuario.creat(
+    const produto = await Produto.create(
         req.body
     )
 
-    res.status(201).jsaon(produto)
+    res.status(201).json(produto)
 
 }
 

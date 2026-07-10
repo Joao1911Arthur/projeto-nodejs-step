@@ -5,12 +5,14 @@ const {
     listarProdutos,
     criarProduto
 } = require('../controllers/produtoController');
+const autenticar = require('../middlewares/autenticar')
 
 router.get('/produtos',
     listarProdutos
 );
 
 router.post('/produtos',
+    autenticar,
     criarProduto
 );
 
