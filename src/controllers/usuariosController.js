@@ -10,7 +10,7 @@ const listarUsuarios = async (req, res) => {
 const criarUsuario = async (req, res) => {
 
     const usuario = await Usuario.create(req.body)
-    res(201).json(usuario)
+    res.status(201).json(usuario)
 
 };
 

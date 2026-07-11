@@ -26,7 +26,7 @@ const registrarUsuario = async (req, res) => {
     });
 
     const token = await jwt.sign(
-        { id: usuario._id, email: usuario.email },
+        { id: usuario._id, email: usuario.email, cargo: usuario.cargo },
         JWT_SECRET,
         { expiresIn: "1d" }
     )
@@ -53,10 +53,10 @@ const login = async (req, res) => {
     );
 
     if (!senhaValida) {
-        res.status(401).json({ error: "Email ou senha incorretos" });
+        res.status(401).json({ error: "senha incorreta" });
     }
 
-    const token = await jwt.sign({ id: usuario._id, email: usuario.email }, JWT_SECRET, { expiresIn: "1d" });
+    const token = await jwt.sign({ id: usuario._id, email: usuario.email, cargo: usuario.cargo }, JWT_SECRET, { expiresIn: "1d" });
 
     res.status(201).json({ mensagem: "Logado com sucesso", token});
 

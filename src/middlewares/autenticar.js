@@ -4,10 +4,10 @@ const JWT_SECRET = process.env.JWT_SECRET || "segredo";
 
 const autenticar = async (req, res, next) => {
 
-  const authHeader = req.headers.authorization;
+    const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-        return  res.status(401).json({ error: 'Token não informado' });
+        return res.status(401).json({ error: 'Token não informado' });
     }
 
     const token = authHeader.split(" ")[1];
@@ -15,13 +15,17 @@ const autenticar = async (req, res, next) => {
     try {
 
         const payload = jwt.verify(token, JWT_SECRET)
+        console.log(payload);
 
         req.usuarioId = payload.id;
         req.usuarioEmail = payload.email;
+        req.usuarioCargo = payload.cargo;
+
+
 
         next();
-    } catch{
-        res.status(401).json({error:'Token inválido ou expirado'})
+    } catch {
+        res.status(401).json({ error: 'Token inválido ou expirado' })
     }
 
 }

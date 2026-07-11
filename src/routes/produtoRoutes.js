@@ -6,8 +6,11 @@ const {
     criarProduto
 } = require('../controllers/produtoController');
 const autenticar = require('../middlewares/autenticar')
+const admin = require('../middlewares/admin')
 
 router.get('/produtos',
+    autenticar,
+    admin,
     listarProdutos
 );
 
