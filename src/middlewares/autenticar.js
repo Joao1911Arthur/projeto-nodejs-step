@@ -14,16 +14,12 @@ const autenticar = async (req, res, next) => {
 
     try {
 
-        const payload = jwt.verify(token, JWT_SECRET)
-        console.log(payload);
+        const payload = await jwt.verify(token, JWT_SECRET)
 
-        req.usuarioId = payload.id;
-        req.usuarioEmail = payload.email;
-        req.usuarioCargo = payload.cargo;
+        req.usuario = payload;
 
 
-
-        next();
+        next()
     } catch {
         res.status(401).json({ error: 'Token inválido ou expirado' })
     }
