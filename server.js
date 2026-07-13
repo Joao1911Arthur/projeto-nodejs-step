@@ -1,11 +1,18 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const app = require('./app')
+const conectar = require("./src/database/database");
+const app = require("./app");
 
-const conectarBanco = require('./src/database/database')
+const PORT = process.env.PORT || 3000;
 
-conectarBanco()
-
-app.listen(process.env.PORT, () =>{
-    console.log("Server Rodando");
-})
+conectar()
+    .then(() => {
+        console.log("MongoDB conectado com sucesso");
+        app.listen(PORT, () => {
+            console.log(`Servidor rodando em http://localhost:${PORT}`);
+        });
+    })
+    .catch((erro) => {
+        console.error("Erro ao conectar no MongoDB:", erro.message);
+        process.exit(1);
+    });

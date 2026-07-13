@@ -1,79 +1,69 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
-const Usuarios = require('../models/Usuarios');
+const Usuario = require("../models/Usuarios");
 
 const JWT_SECRET = process.env.JWT_SECRET || "segredo";
 
-const registrarUsuario = async (req, res) => {
+const registrar = async (req, res) => {
+  const { nome, email, senha, role } = req.body;
 
-    const { nome, email, idade, senha, cargo } = await req.body;
+  const existe = await Usuario.findOne({ email });
+  if (existe) {
+    return res.status(400).json({ erro: "Email já cadastrado" });
+  }
 
-    const existe = await Usuarios.findOne({email});
+  const senhaHash = await bcrypt.hash(senha, 10);
+  const usuario = await Usuario.create({
+    nome, email, senha: senhaHash, role: role || "user",
+  });
 
-    if (existe) {
-        return res.status(400).json({ erro: "Email já cadastrado", });
-    }
-;
-    const senhaHash = await bcrypt.hash(senha, 10);
+  const token = jwt.sign(
+    { id: usuario._id, email: usuario.email, role: usuario.role },
+    JWT_SECRET,
+    { expiresIn: "7d" }
+  );
 
-    const usuario = await Usuarios.create({
-        nome,
-        email,
-        idade,
-        cargo,
-        senha: senhaHash,
-    });
-
-    const token = await jwt.sign(
-        { id: usuario._id, email: usuario.email, cargo: usuario.cargo },
-        JWT_SECRET,
-        { expiresIn: "1d" }
-    );
-
-    res.status(201).json({ mensagem: 'Usuario resgistrado', token, });
-
-}
-
-const login = async (req, res) => {
-
-    const { email, senha } = await req.body;
-
-    const usuario = await Usuarios.findOne({ email });
-
-    if (!usuario) {
-        return res.status(401).json({
-            erro: "Email ou senha inválidos",
-        });
-    }
-
-    const senhaValida = await bcrypt.compare(
-        senha,
-        usuario.senha
-    );
-
-    if (!senhaValida) {
-       ; res.status(401).json({ error: "senha incorreta" });
-    }
-
-    const token = await jwt.sign({ id: usuario._id, email: usuario.email, cargo: usuario.cargo }, JWT_SECRET, { expiresIn: "1d" });
-
-    res.status(201).json({ mensagem: "Logado com sucesso", token});
-
-}
-
-const infoAPI = async (req, res) =>{
-
-    const info = {
-        
-        
-        
-    }
-
-}
-
-module.exports = {
-    registrarUsuario,
-    login
+  res.status(201).json({
+    mensagem: "Usuário registrado com sucesso",
+    token,
+    usuario: { id: usuario._id, nome: usuario.nome, email: usuario.email, role: usuario.role },
+  });
 };
 
+const login = async (req, res) => {
+  const { email, senha } = req.body;
+
+  const usuario = await Usuario.findOne({ email });
+  if (!usuario) {
+    return res.status(401).json({ erro: "Email ou senha inválidos" });
+  }
+
+  const senhaValida = await bcrypt.compare(senha, usuario.senha);
+  if (!senhaValida) {
+    return res.status(401).json({ erro: "Email ou senha inválidos" });
+  }
+
+  const token = jwt.sign(
+    { id: usuario._id, email: usuario.email, role: usuario.role },
+    JWT_SECRET,
+    { expiresIn: "7d" }
+  );
+
+  res.json({
+    mensagem: "Login realizado com sucesso",
+    token,
+    usuario: { id: usuario._id, nome: usuario.nome, email: usuario.email, role: usuario.role },
+  });
+};
+
+const perfil = async (req, res) => {
+  const usuario = await Usuario.findById(req.usuarioId).select("-senha");
+  if (!usuario) {
+    return res.status(404).json({ erro: "Usuário não encontrado" });
+  }
+  res.json({
+    usuario: { id: usuario._id, nome: usuario.nome, email: usuario.email, role: usuario.role },
+  });
+};
+
+module.exports = { registrar, login, perfil };

@@ -1,12 +1,8 @@
-const jwt = require("jsonwebtoken");
-
-const admin = async (req, res, next) => {
-
-   if(req.usuario.cargo != "adm"){
-    return res.status(401).json({error:"Não tem permição"})
-   }
-
-   next();
-}
+const admin = (req, res, next) => {
+  if (req.usuarioRole !== "admin") {
+    return res.status(403).json({ erro: "Acesso restrito a administradores" });
+  }
+  next();
+};
 
 module.exports = admin;

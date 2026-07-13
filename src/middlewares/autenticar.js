@@ -2,28 +2,24 @@ const jwt = require("jsonwebtoken");
 
 const JWT_SECRET = process.env.JWT_SECRET || "segredo";
 
-const autenticar = async (req, res, next) => {
+const autenticar = (req, res, next) => {
+  const authHeader = req.headers.authorization;
 
-    const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({ erro: "Token não informado" });
+  }
 
-    if (!authHeader) {
-        return res.status(401).json({ error: 'Token não informado' });
-    }
+  const token = authHeader.split(" ")[1];
 
-    const token = authHeader.split(" ")[1];
-
-    try {
-
-        const payload = await jwt.verify(token, JWT_SECRET)
-
-        req.usuario = payload;
-
-
-        next()
-    } catch {
-        res.status(401).json({ error: 'Token inválido ou expirado' })
-    }
-
-}
+  try {
+    const payload = jwt.verify(token, JWT_SECRET);
+    req.usuarioId = payload.id;
+    req.usuarioEmail = payload.email;
+    req.usuarioRole = payload.role;
+    next();
+  } catch (erro) {
+    return res.status(401).json({ erro: "Token inválido ou expirado" });
+  }
+};
 
 module.exports = autenticar;

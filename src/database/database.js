@@ -1,12 +1,24 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const conectarBanco = async () =>{
-    try{
-        await mongoose.connect(process.env.MONGO_URL);
-        console.log("mongo conetado")
-    } catch (error) {
-        console.log(error)
-    }
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
 }
 
-module.exports = conectarBanco
+async function conectar() {
+  if (cached.conn) return cached.conn;
+
+  if (!cached.promise) {
+    const MONGODB_URL =
+      process.env.MONGODB_URL ||
+      "mongodb://localhost:27017/projeto-final";
+
+    cached.promise = mongoose.connect(MONGODB_URL);
+  }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
+
+module.exports = conectar;

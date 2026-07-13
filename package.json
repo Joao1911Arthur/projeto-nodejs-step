@@ -31,6 +31,7 @@
     "call-bound": "^1.0.4",
     "chainsaw": "^0.1.0",
     "compress-commons": "^4.1.2",
+    "compression": "^1.8.1",
     "concat-map": "^0.0.1",
     "concat-stream": "^2.0.0",
     "content-disposition": "^1.1.0",
@@ -39,6 +40,7 @@
     "cookie-parser": "^1.4.7",
     "cookie-signature": "^1.2.2",
     "core-util-is": "^1.0.3",
+    "cors": "^2.8.6",
     "crc-32": "^1.2.2",
     "crc32-stream": "^4.0.3",
     "dayjs": "^1.11.21",
@@ -58,6 +60,7 @@
     "etag": "^1.8.1",
     "exceljs": "^4.4.0",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
     "express-session": "^1.19.0",
     "fast-csv": "^4.3.6",
     "finalhandler": "^2.1.1",
@@ -74,6 +77,7 @@
     "graceful-fs": "^4.2.11",
     "has-symbols": "^1.1.0",
     "hasown": "^2.0.3",
+    "helmet": "^8.3.0",
     "http-errors": "^2.0.1",
     "iconv-lite": "^0.7.2",
     "ieee754": "^1.2.1",
@@ -197,7 +201,10 @@
     "zip-stream": "^4.1.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "node server.js",
+    "seed": "node seed.js"
   },
   "repository": {
     "type": "git",
