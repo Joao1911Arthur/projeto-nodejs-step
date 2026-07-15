@@ -3,7 +3,7 @@ const helmet = require("helmet");
 const cors = require("cors");
 const compression = require("compression");
 const rateLimit = require("express-rate-limit");
-const { conectar } = require("./src/database/connect");
+const { conectar } = require("./src/database/database");
 
 const produtoRoutes = require("./src/routes/produtoRoutes");
 const authRoutes = require("./src/routes/authRoutes");
