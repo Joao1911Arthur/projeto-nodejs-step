@@ -1,28 +1,28 @@
 const mongoose = require("mongoose");
- 
+
 let cached = global.mongoose;
- 
+
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
- 
+
 async function conectar() {
   if (cached.conn) return cached.conn;
- 
+
   if (!cached.promise) {
     const MONGODB_URL =
       process.env.MONGODB_URL || "mongodb://localhost:27017/projeto-final";
- 
+
     cached.promise = mongoose.connect(MONGODB_URL, {
       serverSelectionTimeoutMS: 5000,
       bufferCommands: false,
     });
   }
- 
+
   cached.conn = await cached.promise;
   return cached.conn;
 }
- 
+
 async function desconectar() {
   if (cached.conn) {
     await cached.conn.disconnect();
@@ -30,5 +30,5 @@ async function desconectar() {
     cached.promise = null;
   }
 }
- 
+
 module.exports = { conectar, desconectar };
